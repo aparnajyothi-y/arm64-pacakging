@@ -1,0 +1,31 @@
+name: ARM64 packaging Testing on windows
+on:
+ workflow_dispatch:
+ 
+jobs:
+  
+
+
+  test_arm64_packaging:
+    name: Run tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        architecture: [x64, arm64]
+        node_version: [20]
+        
+         
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: aparnajyothi-y/setup-node@node-arm64-testing
+      with:
+        node-version: ${{ matrix.node_version }}
+        architecture: ${{ matrix.architecture }}      
+    - name: Build package
+      run: |
+         npm install
+         npm run build
